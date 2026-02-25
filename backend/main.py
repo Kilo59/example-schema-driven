@@ -1,0 +1,50 @@
+# backend/main.py
+from fastapi import FastAPI, Response
+from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Enable CORS for Vite (default port 5173)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["HX-Trigger"] # Important for HTMX-style logic
+)
+
+class IntakeForm(BaseModel):
+    first_name: str = Field(..., title="First Name")
+    last_name: str = Field(..., title="Last Name")
+    email: str = Field(..., title="Email Address", pattern=r"^\S+@\S+\.\S+$")
+    priority: str = Field("Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]})
+
+@app.get("/api/step/intake")
+async def get_intake():
+    return {
+        "schema": IntakeForm.model_json_schema(),
+        "uiSchema": {
+            "type": "VerticalLayout",
+            "elements": [
+                {
+                    "type": "HorizontalLayout",
+                    "elements": [
+                        {"type": "Control", "scope": "#/properties/first_name"},
+                        {"type": "Control", "scope": "#/properties/last_name"}
+                    ]
+                },
+                {"type": "Control", "scope": "#/properties/email"},
+                {"type": "Control", "scope": "#/properties/priority"}
+            ]
+        },
+        "initialData": {"priority": "Medium"}
+    }
+
+@app.post("/api/submit/intake")
+async def submit_intake(data: IntakeForm, response: Response):
+    # Process data here
+    print(f"Workflow Received: {data.first_name}")
+    # Tell the frontend to advance the workflow
+    response.headers["HX-Trigger"] = "workflow-complete"
+    return {"status": "success"}
