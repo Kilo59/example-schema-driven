@@ -47,24 +47,23 @@ We chose this to allow **JSON Forms** to handle the heavy lifting of form state 
 
 ## 🛠 Getting Started
 
-### 1. Backend
+### 1. Installation
+
+Ensure your Python and Node environments are ready, then run:
 
 ```bash
-cd backend
-uv sync
-uv run uvicorn main:app --reload
-
+uv sync                 # Installs Python dependencies (duty + backend)
+cd frontend && npm install  # Installs React dependencies
+cd ..
 ```
 
-### 2. Frontend
+### 2. Run the Application
+
+Start both the backend and frontend simultaneously with a single command from the project root:
 
 ```bash
-cd frontend
-npm install
-npm run dev
-
+uv run duty start
 ```
-
 ---
 
 ## 🔬 Planned Experiments (Roadmap)

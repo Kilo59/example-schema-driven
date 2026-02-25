@@ -1,0 +1,14 @@
+[project]
+name = "example-schema-driven-root"
+version = "0.1.0"
+description = "Workspace root for example-schema-driven"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["backend"]
+
+[dependency-groups]
+dev = [
+    "duty>=1.4.0",
+]
