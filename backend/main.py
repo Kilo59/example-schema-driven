@@ -3,7 +3,7 @@ from typing import Any, Literal
 
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ app.add_middleware(
 class IntakeForm(BaseModel):
     first_name: str = Field(..., title="First Name")
     last_name: str = Field(..., title="Last Name")
-    email: str = Field(..., title="Email Address", pattern=r"^\S+@\S+\.\S+$")
+    email: EmailStr = Field(..., title="Email Address")
     priority: Literal["Low", "Medium", "High"] = Field("Medium")
 
 
