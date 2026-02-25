@@ -53,7 +53,7 @@ wheels = [
 [[package]]
 name = "backend"
 version = "0.1.0"
-source = { virtual = "backend" }
+source = { editable = "backend" }
 dependencies = [
     { name = "fastapi" },
     { name = "pydantic" },
@@ -104,6 +104,9 @@ wheels = [
 name = "example-schema-driven-root"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "backend" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -113,6 +116,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "backend", editable = "backend" }]
 
 [package.metadata.requires-dev]
 dev = [

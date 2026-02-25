@@ -1,4 +1,6 @@
 # backend/main.py
+from typing import Any
+
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -19,13 +21,11 @@ class IntakeForm(BaseModel):
     first_name: str = Field(..., title="First Name")
     last_name: str = Field(..., title="Last Name")
     email: str = Field(..., title="Email Address", pattern=r"^\S+@\S+\.\S+$")
-    priority: str = Field(
-        "Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]}
-    )
+    priority: str = Field("Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]})
 
 
 @app.get("/api/step/intake")
-async def get_intake():
+async def get_intake() -> dict[str, Any]:
     return {
         "schema": IntakeForm.model_json_schema(),
         "uiSchema": {
@@ -47,7 +47,7 @@ async def get_intake():
 
 
 @app.post("/api/submit/intake")
-async def submit_intake(data: IntakeForm, response: Response):
+async def submit_intake(data: IntakeForm, response: Response) -> dict[str, str]:
     # Process data here
     print(f"Workflow Received: {data.first_name}")
     # Tell the frontend to advance the workflow
