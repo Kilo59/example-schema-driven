@@ -2,41 +2,42 @@ import subprocess
 import sys
 
 from duty import duty
+from duty.context import Context
 
 
 @duty
-def install(ctx):
+def install(ctx: Context):
     """Install all project dependencies (backend and frontend)."""
     ctx.run("uv sync", title="Installing backend dependencies")
     ctx.run("cd frontend && npm install", title="Installing frontend dependencies")
 
 
 @duty
-def format(ctx):
+def format(ctx: Context):
     """Format Python code."""
     ctx.run("uv run ruff format .", title="Formatting with ruff")
 
 
 @duty
-def check(ctx):
+def check(ctx: Context):
     """Lint Python code."""
     ctx.run("uv run ruff check .", title="Linting with ruff")
 
 
 @duty
-def typecheck(ctx):
+def typecheck(ctx: Context):
     """Type-check Python code."""
     ctx.run("uv run mypy backend", title="Type-checking with mypy")
 
 
 @duty(pre=["format", "check", "typecheck"])
-def validate(ctx):
+def validate(ctx: Context):
     """Run all formatting, linting, and type-checking."""
     pass
 
 
 @duty
-def start(ctx):
+def start(ctx: Context):
     """Start both the backend and frontend apps."""
     print("Starting full application (Backend + Frontend)...")
 
