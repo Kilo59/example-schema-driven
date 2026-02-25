@@ -13,24 +13,32 @@ def install(ctx: Context):
 
 
 @duty
-def format(ctx: Context):
+def format(ctx: Context, path: str = "."):
     """Format Python code."""
-    ctx.run("uv run ruff format .", title="Formatting with ruff")
+    ctx.run(f"uv run ruff format {path}", title="Formatting with ruff")
 
 
 @duty
-def check(ctx: Context):
+def lint(ctx: Context, fix: bool = False, unsafe_fixes: bool = False, path: str = "."):
     """Lint Python code."""
-    ctx.run("uv run ruff check .", title="Linting with ruff")
+    cmds = ["uv", "run", "ruff", "check", path]
+    if fix:
+        cmds.append("--fix")
+    if unsafe_fixes:
+        cmds.append("--unsafe-fixes")
+    ctx.run(" ".join(cmds), title="Linting with ruff")
 
 
 @duty
-def typecheck(ctx: Context):
+def typecheck(ctx: Context, path: str | None = None):
     """Type-check Python code."""
-    ctx.run("uv run mypy backend", title="Type-checking with mypy")
+    cmds = ["uv", "run", "mypy"]
+    if path:
+        cmds.append(path)
+    ctx.run(" ".join(cmds), title="Type-checking with mypy")
 
 
-@duty(pre=["format", "check", "typecheck"])
+@duty(pre=["format", "lint", "typecheck"])
 def validate(ctx: Context):
     """Run all formatting, linting, and type-checking."""
     pass
