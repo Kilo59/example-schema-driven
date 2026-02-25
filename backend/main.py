@@ -1,5 +1,5 @@
 # backend/main.py
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,7 +21,7 @@ class IntakeForm(BaseModel):
     first_name: str = Field(..., title="First Name")
     last_name: str = Field(..., title="Last Name")
     email: str = Field(..., title="Email Address", pattern=r"^\S+@\S+\.\S+$")
-    priority: str = Field("Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]})
+    priority: Literal["Low", "Medium", "High"] = Field("Medium")
 
 
 @app.get("/api/step/intake")
