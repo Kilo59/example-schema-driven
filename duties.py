@@ -1,8 +1,8 @@
 import subprocess
+import sys
 
 from duty import duty
 from duty.context import Context
-from duty.exceptions import DutyError
 
 
 @duty
@@ -60,8 +60,8 @@ def start(ctx: Context):
     try:
         backend_proc.wait()
         frontend_proc.wait()
-    except KeyboardInterrupt as e:
+    except KeyboardInterrupt:
         print("\n[INFO] Shutting down application processes...")
         backend_proc.terminate()
         frontend_proc.terminate()
-        raise DutyError("Application stopped by user") from e
+        sys.exit(0)
