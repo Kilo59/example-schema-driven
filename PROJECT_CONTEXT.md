@@ -6,7 +6,7 @@
 - **Non-Developer Friendly:** Workflow steps are defined by JSON metadata, allowing non-coders to modify labels, validation, and field ordering.
 
 ## 2. Technical Stack
-- **Backend:** FastAPI (Python 3.10+), Pydantic (Schema generation & validation).
+- **Backend:** FastAPI (Python 3.13+), Pydantic (Schema generation & validation).
 - **Frontend:** React (Vite), JSON Forms (jsonforms.io), Material UI (Renderers).
 - **Communication:** Standard JSON REST API + HTMX-style headers (`HX-Trigger`) for workflow state transitions.
 

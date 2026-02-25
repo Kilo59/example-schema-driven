@@ -51,10 +51,8 @@ We chose this to allow **JSON Forms** to handle the heavy lifting of form state 
 
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-pip install fastapi uvicorn pydantic
-uvicorn main:app --reload
+uv sync
+uv run uvicorn main:app --reload
 
 ```
 
