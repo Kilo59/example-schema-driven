@@ -36,7 +36,8 @@ show_error_codes = true
 enable_error_code = [
     'ignore-without-code',
     'explicit-override',
-    'possibly-undefined'
+    'possibly-undefined',
+    'deprecated',
 ]
 
 [tool.ruff]
