@@ -6,20 +6,20 @@ from duty.context import Context
 
 
 @duty
-def install(ctx: Context):
+def install(ctx: Context) -> None:
     """Install all project dependencies (backend and frontend)."""
     ctx.run("uv sync", title="Installing backend dependencies")
     ctx.run("cd frontend && npm install", title="Installing frontend dependencies")
 
 
 @duty
-def format(ctx: Context, path: str = "."):
+def format(ctx: Context, path: str = ".") -> None:
     """Format Python code."""
     ctx.run(f"uv run ruff format {path}", title="Formatting with ruff")
 
 
 @duty
-def lint(ctx: Context, fix: bool = False, unsafe_fixes: bool = False, path: str = "."):
+def lint(ctx: Context, fix: bool = False, unsafe_fixes: bool = False, path: str = ".") -> None:
     """Lint Python code."""
     cmds = ["uv", "run", "ruff", "check", path]
     if fix:
@@ -30,7 +30,7 @@ def lint(ctx: Context, fix: bool = False, unsafe_fixes: bool = False, path: str 
 
 
 @duty
-def typecheck(ctx: Context, path: str | None = None):
+def typecheck(ctx: Context, path: str | None = None) -> None:
     """Type-check Python code."""
     cmds = ["uv", "run", "mypy"]
     if path:
@@ -39,13 +39,13 @@ def typecheck(ctx: Context, path: str | None = None):
 
 
 @duty(pre=["format", "lint", "typecheck"])
-def validate(ctx: Context):
+def validate(ctx: Context) -> None:
     """Run all formatting, linting, and type-checking."""
     pass
 
 
 @duty
-def start(ctx: Context):
+def start(ctx: Context) -> None:
     """Start both the backend and frontend apps."""
     print("Starting full application (Backend + Frontend)...")
 
