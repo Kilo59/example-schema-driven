@@ -49,12 +49,10 @@ We chose this to allow **JSON Forms** to handle the heavy lifting of form state 
 
 ### 1. Installation
 
-Ensure your Python and Node environments are ready, then run:
+Ensure your Python and Node environments are ready, then run the unified install task:
 
 ```bash
-uv sync                 # Installs Python dependencies (duty + backend)
-cd frontend && npm install  # Installs React dependencies
-cd ..
+uv run duty install
 ```
 
 ### 2. Run the Application

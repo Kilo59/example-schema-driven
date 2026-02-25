@@ -11,4 +11,6 @@ members = ["backend"]
 [dependency-groups]
 dev = [
     "duty>=1.4.0",
+    "ruff>=0.15.2",
+    "mypy>=1.15.0",
 ]

@@ -5,6 +5,37 @@ from duty import duty
 
 
 @duty
+def install(ctx):
+    """Install all project dependencies (backend and frontend)."""
+    ctx.run("uv sync", title="Installing backend dependencies")
+    ctx.run("cd frontend && npm install", title="Installing frontend dependencies")
+
+
+@duty
+def format(ctx):
+    """Format Python code."""
+    ctx.run("uv run ruff format .", title="Formatting with ruff")
+
+
+@duty
+def check(ctx):
+    """Lint Python code."""
+    ctx.run("uv run ruff check .", title="Linting with ruff")
+
+
+@duty
+def typecheck(ctx):
+    """Type-check Python code."""
+    ctx.run("uv run mypy backend", title="Type-checking with mypy")
+
+
+@duty(pre=["format", "check", "typecheck"])
+def validate(ctx):
+    """Run all formatting, linting, and type-checking."""
+    pass
+
+
+@duty
 def start(ctx):
     """Start both the backend and frontend apps."""
     print("Starting full application (Backend + Frontend)...")

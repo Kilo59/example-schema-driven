@@ -11,14 +11,18 @@ app.add_middleware(
     allow_origins=["http://localhost:5173"],
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["HX-Trigger"] # Important for HTMX-style logic
+    expose_headers=["HX-Trigger"],  # Important for HTMX-style logic
 )
+
 
 class IntakeForm(BaseModel):
     first_name: str = Field(..., title="First Name")
     last_name: str = Field(..., title="Last Name")
     email: str = Field(..., title="Email Address", pattern=r"^\S+@\S+\.\S+$")
-    priority: str = Field("Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]})
+    priority: str = Field(
+        "Medium", json_schema_extra={"enum": ["Low", "Medium", "High"]}
+    )
+
 
 @app.get("/api/step/intake")
 async def get_intake():
@@ -31,15 +35,16 @@ async def get_intake():
                     "type": "HorizontalLayout",
                     "elements": [
                         {"type": "Control", "scope": "#/properties/first_name"},
-                        {"type": "Control", "scope": "#/properties/last_name"}
-                    ]
+                        {"type": "Control", "scope": "#/properties/last_name"},
+                    ],
                 },
                 {"type": "Control", "scope": "#/properties/email"},
-                {"type": "Control", "scope": "#/properties/priority"}
-            ]
+                {"type": "Control", "scope": "#/properties/priority"},
+            ],
         },
-        "initialData": {"priority": "Medium"}
+        "initialData": {"priority": "Medium"},
     }
+
 
 @app.post("/api/submit/intake")
 async def submit_intake(data: IntakeForm, response: Response):
