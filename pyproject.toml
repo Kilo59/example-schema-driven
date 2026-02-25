@@ -1,0 +1,108 @@
+[project]
+name = "example-schema-driven-root"
+version = "0.1.0"
+description = "Workspace root for example-schema-driven"
+requires-python = ">=3.13"
+dependencies = ["backend"]
+
+[tool.uv.workspace]
+members = ["backend"]
+
+[tool.uv.sources]
+backend = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "duty>=1.4.0",
+    "ruff>=0.15.2",
+    "mypy>=1.15.0",
+]
+
+[tool.mypy]
+python_version = "3.13"
+plugins = [
+    # "pydantic.mypy",
+]
+files = [
+    "duties.py",
+    "backend",
+]
+strict = true
+warn_unused_configs = true
+ignore_missing_imports = false
+follow_imports = 'normal'
+warn_redundant_casts = true
+show_error_codes = true
+enable_error_code = [
+    'ignore-without-code',
+    'explicit-override',
+    'possibly-undefined',
+    'deprecated',
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "ASYNC", # async rules
+    "B",    # bugbear - common python bugs & design issues
+    "C",    # Complexity (mccabe+) & comprehensions
+    "DTZ",  # flake8-datetimez-dtz - prevent use of tz naive datetimes
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "FAST", # FASTAPI rules
+    "FBT",  # flake8-boolean-trap
+    "FURB", # refurb
+    "I",    # isort
+    "ICN",  # import conventions
+    "INP",  # flake8-no-pep420 - disallow implicit namespace packages
+    "LOG",  # logger related
+    "N",    # pep8-naming
+    "NPY",  # NumPy-specific rules
+    "PERF", # performance
+    "PGH",  # pygrep-hooks - misc.
+    "PL",   # pylint
+    "PT",   # flake8-pytest-style
+    "PTH",  # use-pathlib - use pathlib for os.path and glob operations
+    "PYI",  # flake8-pyi - type stub files
+    "RUF",  # ruff authored rules
+    "S",    # bandit - security
+    "SIM",  # flake8-simplify
+    "SLOT", # flake-slots
+    "TCH",  # flake8-type-checking-tch
+    "TID",  # flake8-tidy-imports
+    "TRY",  # TRYceratops
+    "UP",   # pyupgrade
+    "W",    # Warning
+    "YTT",  # flake8-2020 - misuse of sys.version
+]
+ignore = [
+    "TC003", # don't care about standard library typing imports
+    "TRY003", # worry about overly long exception message later # TODO
+]
+
+[tool.ruff.lint.per-file-ignores]
+"duties.py" = [
+    # TODO: duty tasks behavior is different than invoke functions, try to resolve
+    "FBT001",
+    "FBT002",
+    "S603", # We always know the input to these subprocesses in duties files
+    ]
+"tests/**/*.py" = [
+    "S101", # assert statements should be used in tests
+    "S311", # random numbers in tests do not need to be cryptographically secure
+    "S603", # subprocess without shell
+    "S607", # protects against modification of PATH
+    "S608", # don't care about sql injection in tests
+    "S105", # hard-code passwords in tests should be fake
+    "S106", # hard-code passwords in tests should be fake
+    "PLR2004", # magic values in test comparison is less of a concern
+    "PLC0415", # lazy imports needed for some tests and fixture setup
+    "FBT001", # boolean typed positional arguments common in parametrized tests
+    "FBT003", # Boolean positional value in test code is common and less of a concern
+    "TRY003", # don't care about long exception messages in tests
+    "PLW1510", # subprocess check not needed in tests
+    "PT013", # pytest import style, prevents importing param and or types in from style
+]
